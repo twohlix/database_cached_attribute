@@ -1,12 +1,12 @@
 require 'active_support/concern'
 
-# CachedAttribute adds a method to add a set of easy to use cache invalidation 
+# DatabaseCachedAttribute adds a method to add a set of easy to use cache invalidation 
 # methods/callbacks for specified attributes
 # 
 # On the model where you possibly may want to cache things from this model that may
 # be heavy to create:
-#   include CachedAttribute
-#   cached_attribute :attribute_name, :another_attribute_name
+#   include DatabaseCachedAttribute
+#   database_cached_attribute :attribute_name, :another_attribute_name
 # This will create the methods
 #   invalidate_attribute_name(optional_object)
 #   invalidate_another_attribute_name(optional_object)
@@ -15,7 +15,7 @@ require 'active_support/concern'
 # Which means invalidating that attribute is easy, say when you add an associated object
 #   has_many :things, before_add: :invalidate_attribute, before_remove: :invalidate_other_attribute
 #   
-module CachedAttribute
+module DatabaseCachedAttribute
   extend ActiveSupport::Concern
 
   included do
@@ -59,7 +59,7 @@ module CachedAttribute
 
   module ClassMethods
     # Sets up cache invalidation callbacks for the provided attributes
-    def cached_attribute(*attrs)
+    def database_cached_attribute(*attrs)
       attrs.each do |attr|
         define_method("invalidate_#{attr}") do |arg=nil| # default arg to allow before_blah callbacks
           invalidate_cache attr.to_sym
