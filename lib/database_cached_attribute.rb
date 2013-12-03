@@ -1,0 +1,2 @@
+module DatabaseCachedAttribute
+end
