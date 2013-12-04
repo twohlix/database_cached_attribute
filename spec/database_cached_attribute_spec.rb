@@ -104,6 +104,41 @@ describe DatabaseCachedAttribute do
       expect(@compare_obj.id).to eq(@test_obj.id)
       expect(@compare_obj.string_attribute).to eq(nil)
     end
+
+    it "persists a cache update" do
+      expect(@test_obj.string_attribute).to eq("original string")
+      @test_obj.string_attribute = "new string"
+      @test_obj.cache_string_attribute
+      expect(@test_obj.string_attribute).to eq("new string")
+      
+      @compare_obj = IncludeClass.last
+      expect(@compare_obj.id).to eq(@test_obj.id)
+      expect(@compare_obj.string_attribute).to eq("new string")
+    end
+
+    it "does not persist cache invalidation with other changes" do
+      expect(@test_obj.string_attribute).to eq("original string")
+      @test_obj.integer_attribute = 1337
+      @test_obj.invalidate_string_attribute
+      expect(@test_obj.string_attribute).to eq(nil)
+      @compare_obj = IncludeClass.last
+      expect(@compare_obj.id).to eq(@test_obj.id)
+      expect(@compare_obj.string_attribute).to eq("original string")
+      expect(@compare_obj.integer_attribute).to eq(nil)
+    end
+
+    it "does not persist cache updates with other changes" do
+      expect(@test_obj.string_attribute).to eq("original string")
+      @test_obj.string_attribute = "new string"
+      @test_obj.integer_attribute = 1337
+      @test_obj.cache_string_attribute
+      expect(@test_obj.string_attribute).to eq("new string")
+      
+      @compare_obj = IncludeClass.last
+      expect(@compare_obj.id).to eq(@test_obj.id)
+      expect(@compare_obj.string_attribute).to eq("original string")
+      expect(@compare_obj.integer_attribute).to eq(nil)
+    end
   end
   
 end
