@@ -21,13 +21,13 @@ module DatabaseCachedAttribute
   included do
     # Cache invalidation by column
     def invalidate_cache (column_name)
-      self[column_name] = nil
-      update_cache column_name
+      self[column_name.to_sym] = nil
+      update_cache column_name.to_sym
     end
 
     # Update cache by column
     def update_cache (column_name)
-      save if only_change? column_name && persisted?
+      save if only_change?(column_name) && persisted?
     end
     
     # Determines if the provided column name is the only change
