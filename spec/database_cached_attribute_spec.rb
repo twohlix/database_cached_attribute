@@ -30,5 +30,25 @@ describe DatabaseCachedAttribute do
     expect(@test_include.respond_to? :invalidate_cache).to eq(true)
     expect(@test_no_include.respond_to? :invalidate_cache).to eq(false)
   end
+
+  it "using database_cached_attribute in the model adds nice functions to invalidate cache" do
+    expect(@test_include.respond_to? :invalidate_string_attribute).to eq(true)
+    expect(@test_include.respond_to? :invalidate_integer_attribute).to eq(true)
+    expect(@test_include.respond_to? :invalidate_non_attribute).to eq(false)
+
+    expect(@test_no_include.respond_to? :invalidate_string_attribute).to eq(false)
+    expect(@test_no_include.respond_to? :invalidate_integer_attribute).to eq(false)
+    expect(@test_no_include.respond_to? :invalidate_non_attribute).to eq(false)
+  end
+
+  it "using database_cached_attribute in the model adds nice functions to save caches" do
+    expect(@test_include.respond_to? :cache_string_attribute).to eq(true)
+    expect(@test_include.respond_to? :cache_integer_attribute).to eq(true)
+    expect(@test_include.respond_to? :cache_non_attribute).to eq(false)
+
+    expect(@test_no_include.respond_to? :cache_string_attribute).to eq(false)
+    expect(@test_no_include.respond_to? :cache_integer_attribute).to eq(false)
+    expect(@test_no_include.respond_to? :cache_non_attribute).to eq(false)
+  end
   
 end
