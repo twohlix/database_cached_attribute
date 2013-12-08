@@ -25,9 +25,10 @@ end
 ```
 That will create a few functions for your model such as:
 ```ruby
-YourFunClass.invalidate_your_column #invalidates and persists the change to the db if appropriate
-YourFunClass.cache_your_column      #attempts to save your cache change to the db if appropriate
-YourFunClass.only_change? :column_name #tells you if your objects only change is that column
+your_obj = YourFunClass.new
+your_obj.invalidate_your_column #invalidates and persists the change to the db if appropriate
+your_obj.cache_your_column      #attempts to save your cache change to the db if appropriate
+your_obj.only_your_column_changed? #tells you if your objects only change is that column
 ```
 These helpers let you do nice things in your model like:
 ```ruby
